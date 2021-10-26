@@ -1,0 +1,5 @@
+---
+mysql_user_name: rajan
+mysql_user_password: rajan
+mysql_root_username: root
+mysql_root_password: root

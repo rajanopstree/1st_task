@@ -1,0 +1,41 @@
+---
+- name: configure apache server with installation playbook
+  hosts: webserver
+  tasks:
+    - name: installing apache server
+      package:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - httpd
+        - php
+
+    - name: start and enabled the service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: copy the config file
+      copy:
+        src: ./index.html
+        dest: "{{document_root}}"
+        owner: apache
+        group: apache
+        mode: '0644'
+
+    - name: copy the source file
+      template:
+        src: ./httpd.conf.j2 
+        dest: /etc/httpd/conf/httpd.conf
+      notify: restartserver
+
+  handlers:
+    - name: restartserver
+      service:
+        name: httpd
+        state: restarted
+    - name: reloadserver
+      service:
+        name: httpd
+        state: reloaded

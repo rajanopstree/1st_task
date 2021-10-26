@@ -1,0 +1,4 @@
+---
+document_root: /rajan
+apache_listen_port: 80
+
